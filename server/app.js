@@ -4,6 +4,9 @@ const dotenv = require('dotenv')
 const jwt = require('jsonwebtoken')
 const auth = require('./auth.js')
 const { secretKey, APP_PORT } = require('./configs.js')
+const { prepareDb } = require('./dbconn.js')
+
+prepareDb()
 
 const corsOptions = {
     origin: 'http://localhost'
