@@ -22,7 +22,9 @@ const prepareDb = async () => {
     } catch (e) {
         console.log(`Error catched: ${e}`)
     } finally {
-        client1.end()
+        console.log('called')
+        await client1.end()
+        await client2.end()
     }
 }
 
@@ -33,7 +35,7 @@ const populateTable = async () => {
     } catch (e) {
         console.log(`1 - ERROR OCCURED ${e}`)
     } finally {
-        client3.end()
+        await client3.end()
     }
 }
 
@@ -45,19 +47,21 @@ const getUser = async (username) => {
     } catch (e) {
         console.log(`2 - ERROR OCCURED ${e}`)
     } finally {
-        client4.end()
+        await client4.end()
     }
 }
 
-const test = async () => {
-    await prepareDb()
-    await populateTable()
-    await getUser('berry')
-
-    return Promise.resolve('FINISHED!')
+function tester() {
+    setTimeout(() => console.log('ss'), 4000)
+    return 555
+    // return new Promise((resolve, reject) => {
+    //     setTimeout(() => {
+    //         resolve('rezolviddd')
+    //     }, 3000);
+    // })
 }
 
-console.log(test())
+console.log(tester())
 
 module.exports = {
     prepareDb: prepareDb
