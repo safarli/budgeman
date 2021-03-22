@@ -1,6 +1,5 @@
 const express = require('express')
 const cors = require('cors')
-const dotenv = require('dotenv')
 const jwt = require('jsonwebtoken')
 const auth = require('./auth.js')
 const { secretKey, APP_PORT } = require('./configs.js')

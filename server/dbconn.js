@@ -9,7 +9,7 @@ const client4 = new Client(PG_CONFIG('ofisapi'))
 const prepareDb = async () => {
     try {
         await client1.connect()
-        await client1.query(`DROP DATABASE IF EXISTS ofisapi WITH (FORCE);`)
+        await client1.query(`DROP DATABASE IF EXISTS ofisapi WITH (FORCE)`)
         await client1.query(`CREATE DATABASE ofisapi`)
 
         await client2.connect()
@@ -50,18 +50,6 @@ const getUser = async (username) => {
         await client4.end()
     }
 }
-
-function tester() {
-    setTimeout(() => console.log('ss'), 4000)
-    return 555
-    // return new Promise((resolve, reject) => {
-    //     setTimeout(() => {
-    //         resolve('rezolviddd')
-    //     }, 3000);
-    // })
-}
-
-console.log(tester())
 
 module.exports = {
     prepareDb: prepareDb

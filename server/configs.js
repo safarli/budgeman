@@ -1,13 +1,13 @@
 
 module.exports = {
-    secretKey: 'sifre2021',
+    secretKey: '',
     APP_PORT: process.env.APP_PORT,
     PG_CONFIG: function(db='postgres') {
         return {
-            host: 'wavevo.com',
-            port: 9999,
-            user: 'psqadmin',
-            password: 'psadmin01',
+            host: 'database-1.cd5r1pmmefjf.eu-west-3.rds.amazonaws.com',
+            port: 5432,
+            user: 'postgres',
+            password: 'gello99a3',
             database: db
         }
     },
