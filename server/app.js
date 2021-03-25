@@ -3,9 +3,13 @@ const cors = require('cors')
 const jwt = require('jsonwebtoken')
 const auth = require('./auth.js')
 const { secretKey, APP_PORT } = require('./configs.js')
-const { prepareDb } = require('./dbconn.js')
+const { prepareDb, populateTable } = require('./dbconn.js')
+const { signUpUser, logInUser } = require('./dbqueries.js')
 
 prepareDb()
+    .then(() => {
+        populateTable()
+    })
 
 const corsOptions = {
     origin: 'http://localhost'
@@ -16,8 +20,8 @@ app.use(cors(corsOptions))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
-app.post('/signup', auth.signUpUser)
-app.post('/login', auth.logInUser)
+app.post('/signup', signUpUser)
+app.post('/login', logInUser)
 
 app.get('/', (req, res) => {
     res.status(200).send('Welcome to main page')
