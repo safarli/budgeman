@@ -1,7 +1,6 @@
 const express = require('express')
 const cors = require('cors')
 const jwt = require('jsonwebtoken')
-const auth = require('./auth.js')
 const { secretKey, APP_PORT } = require('./configs.js')
 const { prepareDb, populateTable } = require('./dbconn.js')
 const { signUpUser, logInUser } = require('./dbqueries.js')

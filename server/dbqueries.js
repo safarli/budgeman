@@ -22,8 +22,7 @@ const logInUser = (req, res) => {
         .then((result) => {
             const { rows } = result
             if (rows.length === 0) {
-                res.status(401).send('USER NOT FOUND')
-                return 'USER NOT FOUND IN DB'
+                return res.status(401).send('USER NOT FOUND')
             }
             const passwordMatch = bcryptjs.compareSync(password, rows[0].password)
             if (passwordMatch) {
@@ -36,7 +35,7 @@ const logInUser = (req, res) => {
                     role: 'standard'
                 }
                 const token = jwt.sign(payload, secretKey, signOptions)
-                res.status(200).send(token)
+                return res.status(200).send(token)
             }
 
         })
