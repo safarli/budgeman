@@ -1,7 +1,7 @@
 require('dotenv').config()
 
 module.exports = {
-    secretKey: '',
+    secretKey: 'applejuice',
     APP_PORT: process.env.APP_PORT,
     PG_CONFIG: function(db='postgres') {
         return {

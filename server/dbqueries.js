@@ -1,6 +1,6 @@
 const { Client, Pool } = require('pg')
 const bcryptjs = require('bcryptjs')
-const { PG_CONFIG } = require('./configs.js')
+const { PG_CONFIG, secretKey } = require('./configs.js')
 const jwt = require('jsonwebtoken')
 
 const pool = new Pool(PG_CONFIG('ofisapi'))
@@ -27,9 +27,18 @@ const logInUser = (req, res) => {
             }
             const passwordMatch = bcryptjs.compareSync(password, rows[0].password)
             if (passwordMatch) {
-                return res.status(201).send('LOG IN SUCCESSFUL')
+                const signOptions = {
+                    expiresIn: '60s',
+                    algorithm: 'HS256'
+                }
+                const payload = {
+                    id: rows[0].user_id,
+                    role: 'standard'
+                }
+                const token = jwt.sign(payload, secretKey, signOptions)
+                res.status(200).send(token)
             }
-            return res.status(401).send('LOG IN UNSUCCESSFUL')
+
         })
         .catch((error) => console.log(error))
 }
