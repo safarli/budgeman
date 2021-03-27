@@ -13,7 +13,12 @@ const signUpUser = (req, res) => {
             console.log('User added to db')
             res.status(200).send('Sign up successful')
         })
-        .catch((error) => { console.log(error) })
+        .catch((error) => {
+            if (error.code === '23505') {
+                return console.log('Username already exists, please try another username')
+            }
+            console.log('Error occured' + error)
+        })
 }
 
 const logInUser = (req, res) => {
@@ -27,7 +32,7 @@ const logInUser = (req, res) => {
             const passwordMatch = bcryptjs.compareSync(password, rows[0].password)
             if (passwordMatch) {
                 const signOptions = {
-                    expiresIn: '60s',
+                    expiresIn: '360s',
                     algorithm: 'HS256'
                 }
                 const payload = {
@@ -42,7 +47,31 @@ const logInUser = (req, res) => {
         .catch((error) => console.log(error))
 }
 
+const getAllUsers = (req, res) => {
+    pool.query(`SELECT * FROM users`)
+        .then((result) => {
+            console.log(result.rows)
+            res.status(200).send(result.rows)
+        })
+        .catch((e) => console.log(e))
+}
+
+const getUserTasks = (req, res) => (req, res) => {
+    const authHeader = req.headers['Authorization']
+    if (authHeader) {
+        const token = authHeader.split(' ')[0]
+        return jwt.verify(token, secretKey, (err, decoded) => {
+            if (err) return console.log(err)
+            return 0
+            // --- CONTINUE FROM HERE --- //
+        })
+    }
+    return res.status(401).send('NO TOKEN PROVIDED')
+}
+
 module.exports = {
     signUpUser,
-    logInUser
+    logInUser,
+    getAllUsers,
+    getUserTasks
 }

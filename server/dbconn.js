@@ -24,6 +24,7 @@ const prepareDb = () => {
                 user_id INT GENERATED ALWAYS AS IDENTITY,
                 username VARCHAR(50) NOT NULL,
                 password VARCHAR(140) NOT NULL,
+                UNIQUE (username),
                 PRIMARY KEY (user_id));
             `)
             })
