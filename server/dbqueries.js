@@ -42,13 +42,13 @@ const logInUser = (req, res) => {
                 const token = jwt.sign(payload, secretKey, signOptions)
                 return res.status(200).send(token)
             }
-
+            return res.status(401).send('PASSWORD WRONG')
         })
         .catch((error) => console.log(error))
 }
 
 const getAllUsers = (req, res) => {
-    pool.query(`SELECT * FROM users`)
+    pool.query(`SELECT user_id, username, password FROM users`)
         .then((result) => {
             console.log(result.rows)
             res.status(200).send(result.rows)
@@ -56,14 +56,20 @@ const getAllUsers = (req, res) => {
         .catch((e) => console.log(e))
 }
 
-const getUserTasks = (req, res) => (req, res) => {
-    const authHeader = req.headers['Authorization']
+const getUserTasks = (req, res) => {
+    const authHeader = req.headers['authorization']
     if (authHeader) {
-        const token = authHeader.split(' ')[0]
+        const token = authHeader.split(' ')[1]
         return jwt.verify(token, secretKey, (err, decoded) => {
-            if (err) return console.log(err)
-            return 0
-            // --- CONTINUE FROM HERE --- //
+            if (err) {
+                return res.status(401).send('TOKEN VERIFICATION FAILED ' + err)
+            }
+            return pool.query(`SELECT tasks FROM users WHERE user_id = $1`, [decoded.id])
+                .then((result) => {
+                    const { tasks } = result.rows[0]
+                    console.log(tasks)
+                    res.status(200).send(tasks)
+                })
         })
     }
     return res.status(401).send('NO TOKEN PROVIDED')

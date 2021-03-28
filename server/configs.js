@@ -1,7 +1,9 @@
 require('dotenv').config()
+const bcryptjs = require('bcryptjs')
 
 module.exports = {
     secretKey: 'applejuice',
+    salt: bcryptjs.genSaltSync(10),
     APP_PORT: process.env.APP_PORT,
     PG_CONFIG: function(db='postgres') {
         return {
