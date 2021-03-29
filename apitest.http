@@ -1,13 +1,4 @@
 ###
-GET http://localhost:3000/api HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE5OTIwMSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjE1Nzk0OTU0LCJleHAiOjE2MTU3OTUwMTR9.ejh2Fu5C2P5QTl-oMbnK4H07t5nxkitfOfcYORHvgHU
-###
-POST http://localhost:3000/login HTTP/1.1
-Content-Type: application/x-www-form-urlencoded
-
-username=berry&password=mocha99
-
-###
 POST http://localhost:9999/signup HTTP/1.1
 Content-Type: application/x-www-form-urlencoded
 
@@ -17,7 +8,7 @@ username=junioo&password=fabby99&tasks=PREPAREDINNERANDMAKECOFFEE
 POST http://localhost:9999/login HTTP/1.1
 Content-Type: application/x-www-form-urlencoded
 
-username=samir&password=sako0
+username=bsafarli&password=safar123
 
 ###
 GET http://localhost:9999/users HTTP/1.1
@@ -28,4 +19,11 @@ Authorization: Bearer XXX
 
 ###
 GET http://localhost:9999/api/gettasks HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mywicm9sZSI6InN0YW5kYXJkIiwiaWF0IjoxNjE2OTQzMjc0LCJleHAiOjE2MTY5NDM2MzR9.LxlOAYRmiA09dopNI4BdA3w4zA8STGFKqF-R0jx4EQA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN0YW5kYXJkIiwiaWF0IjoxNjE3MDA3ODEwLCJleHAiOjE2MTcwMDk2MTB9.nAQXubDuET0kiuUjscKN2DqnOb02BoETshHiaBxXDl4
+
+###
+POST http://localhost:9999/addtask HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN0YW5kYXJkIiwiaWF0IjoxNjE3MDA3ODEwLCJleHAiOjE2MTcwMDk2MTB9.nAQXubDuET0kiuUjscKN2DqnOb02BoETshHiaBxXDl4
+Content-Type: application/x-www-form-urlencoded
+
+task=Ambardan yukleri dasimaq

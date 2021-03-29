@@ -3,7 +3,7 @@ const cors = require('cors')
 const jwt = require('jsonwebtoken')
 const { secretKey, APP_PORT } = require('./configs.js')
 const { prepareDb, populateTable } = require('./dbconn.js')
-const { signUpUser, logInUser, getAllUsers, getUserTasks } = require('./dbqueries.js')
+const { signUpUser, logInUser, getAllUsers, getUserTasks, addUserTask } = require('./dbqueries.js')
 
 prepareDb()
     .then(() => {
@@ -21,6 +21,7 @@ app.use(express.json())
 
 app.post('/signup', signUpUser)
 app.post('/login', logInUser)
+app.post('/addtask', addUserTask)
 
 app.get('/', (req, res) => {
     res.status(200).send('Welcome to main page')

@@ -8,7 +8,7 @@ const pool = new Pool(PG_CONFIG('ofisapi'))
 const signUpUser = (req, res) => {
     const { username, password } = req.body
     const hashedPassword = bcryptjs.hashSync(password, bcryptjs.genSaltSync(10))
-    pool.query(`INSERT INTO users(username, password) VALUES ($1, $2)`, [username, hashedPassword])
+    pool.query(`INSERT INTO users(username, password) VALUES ($1, $2);`, [username, hashedPassword])
         .then((result) => {
             console.log('User added to db')
             res.status(200).send('Sign up successful')
@@ -23,7 +23,7 @@ const signUpUser = (req, res) => {
 
 const logInUser = (req, res) => {
     const { username, password } = req.body
-    pool.query(`SELECT * FROM users WHERE username = $1`, [username])
+    pool.query(`SELECT * FROM users WHERE username = $1;`, [username])
         .then((result) => {
             const { rows } = result
             if (rows.length === 0) {
@@ -32,7 +32,7 @@ const logInUser = (req, res) => {
             const passwordMatch = bcryptjs.compareSync(password, rows[0].password)
             if (passwordMatch) {
                 const signOptions = {
-                    expiresIn: '360s',
+                    expiresIn: '1800s', // 30min
                     algorithm: 'HS256'
                 }
                 const payload = {
@@ -48,9 +48,8 @@ const logInUser = (req, res) => {
 }
 
 const getAllUsers = (req, res) => {
-    pool.query(`SELECT user_id, username, password FROM users`)
+    pool.query(`SELECT user_id, username, password FROM users;`)
         .then((result) => {
-            console.log(result.rows)
             res.status(200).send(result.rows)
         })
         .catch((e) => console.log(e))
@@ -64,12 +63,34 @@ const getUserTasks = (req, res) => {
             if (err) {
                 return res.status(401).send('TOKEN VERIFICATION FAILED ' + err)
             }
-            return pool.query(`SELECT tasks FROM users WHERE user_id = $1`, [decoded.id])
+            return pool.query(`SELECT task, TO_TIMESTAMP(date_added, 'YYYY-MM-DD HH:MI:SS') FROM user_tasks WHERE user_id = $1;`, [decoded.id])
                 .then((result) => {
-                    const { tasks } = result.rows[0]
-                    console.log(tasks)
-                    res.status(200).send(tasks)
+                    const { rows } = result
+                    res.status(200).send(rows)
                 })
+        })
+    }
+    return res.status(401).send('NO TOKEN PROVIDED')
+}
+
+const addUserTask = (req, res) => {
+    const authHeader = req.headers['authorization']
+    const { task } = req.body
+    if (authHeader) {
+        const token = authHeader.split(' ')[1]
+        return jwt.verify(token, secretKey, (err, decoded) => {
+            if (err) {
+                return res.status(401).send('TOKEN VERIFICATION FAILED ' + err)
+            }
+            return pool.query(`INSERT INTO user_tasks (task, user_id) VALUES ($1, $2);`, [task, decoded.id])
+                .then((result) => {
+                    console.log('task insert result ' + result.rows)
+                    return res.status(200).send('Task inserted successfully insert id: ' + result.rows)
+                })
+                .catch((e) => {
+                    return console.log(e)
+                })
+
         })
     }
     return res.status(401).send('NO TOKEN PROVIDED')
@@ -79,5 +100,6 @@ module.exports = {
     signUpUser,
     logInUser,
     getAllUsers,
-    getUserTasks
+    getUserTasks,
+    addUserTask
 }
