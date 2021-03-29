@@ -44,7 +44,7 @@ app.get('/api', (req, res) => {
     return res.status(401).send('TOKEN NOT PROVIDED')
 })
 
-app.get('/api/gettasks', getUserTasks)
+app.get('/tasks', getUserTasks)
 
 const listener = app.listen(APP_PORT || 3000, () => console.log(`Server started, 
 listening on port: ${listener.address().port}`))
