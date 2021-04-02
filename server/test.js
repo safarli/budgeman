@@ -1,24 +1,17 @@
-const resolveIn = (t = 2000) => {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve('first resolve')
-        }, t)
-    })
-}
 
-resolveIn(1000)
-    .then((r) => {
-        console.log(r)
-        return resolveIn(500)
-    }
-    )
-    .then((r) => {
-        console.log(r)
-        return resolveIn(1000)
-    }
-    )
-    .then((r) => {
-        console.log(r)
-        return resolveIn(1500)
-    }
-    )
+require('dotenv').config()
+
+// const date = new Date('2021-01-19T17:48:00.000+07:00').toUTCString()
+// console.log(date)
+
+// console.log(process.env.TZ)
+
+// const date = new Date('2007-05-14T16:39:00.000+03:00');
+// const date2 = new Date();
+
+// console.log(date2.toLocaleString({timeZone: 'Asia/Baku'}));
+
+
+// console.log('****')
+
+console.log(Date.now())
